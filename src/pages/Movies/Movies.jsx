@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getMoviesByQuery } from 'services/apiService';
 import { Loader } from 'components/Loader/Loader';
+import { Header } from 'components/App.styled';
 
 const Movies = () => {
   const [query, setQuery] = useState('');
@@ -38,7 +39,7 @@ const Movies = () => {
   return (
     <>
       {isLoading && <Loader />}
-      <h1>Movies</h1>
+      <Header>Movies</Header>
       <form onSubmit={handleSubmit}>
         <input type="text" name="query" value={query} onChange={handleChange} />
         <button type="submit">Search</button>

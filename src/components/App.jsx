@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { Navigation } from './Navigation/Navigation';
 import { lazy, Suspense } from 'react';
+import { Header } from './App.styled';
 
 const Home = lazy(() =>
   import(/* webpackChunkName: "Homepage" */ '../pages/Home/Home')
@@ -29,7 +30,7 @@ export const App = () => {
       <Suspense
         fallback={
           <div>
-            <h1>Loading...</h1>
+            <Header>Loading...</Header>
           </div>
         }
       >

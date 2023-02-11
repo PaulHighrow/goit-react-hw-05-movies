@@ -1,5 +1,90 @@
+import { Header } from 'components/App.styled';
+import { Loader } from 'components/Loader/Loader';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { getMovieReviews } from 'services/apiService';
+import { BASE_IMG_URL } from 'services/constants';
+import {
+  ReviewList,
+  Review,
+  Author,
+  About,
+  Avatar,
+  Name,
+  ReviewDate,
+  Text,
+} from './Reviews.styled';
+
 const Reviews = () => {
-  return <h1>Reviews</h1>;
+  const [reviews, setReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { id } = useParams();
+
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchReviews = async () => {
+      try {
+        const movieReviews = await getMovieReviews(id);
+        setReviews(movieReviews);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [id]);
+
+  return (
+    <>
+      <Header as="h2">Reviews</Header>
+      {isLoading ? (
+        <Loader />
+      ) : !!reviews.length ? (
+        <ReviewList>
+          {reviews.map(
+            ({
+              id,
+              author,
+              content,
+              created_at,
+              author_details: { avatar_path },
+            }) => {
+              if (!avatar_path) {
+                avatar_path =
+                  '/https://msf-theeltal.de/wp-content/uploads/2018/04/no-avatar.jpg';
+              }
+
+              return (
+                <Review key={id}>
+                  <Author>
+                    <Avatar
+                      src={
+                        avatar_path.includes('https')
+                          ? avatar_path.slice(1)
+                          : BASE_IMG_URL + avatar_path
+                      }
+                      alt={`${author}'s avatar`}
+                    />
+                    <About>
+                      <Name>{author}</Name>
+                      <ReviewDate>
+                        {new Date(created_at).toLocaleString()}
+                      </ReviewDate>
+                    </About>
+                  </Author>
+                  <Text>{content}</Text>
+                </Review>
+              );
+            }
+          )}
+        </ReviewList>
+      ) : (
+        <p>Sorry, no reviews yet!</p>
+      )}
+    </>
+  );
 };
 
 export default Reviews;

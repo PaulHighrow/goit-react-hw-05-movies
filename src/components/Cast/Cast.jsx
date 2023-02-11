@@ -1,3 +1,4 @@
+import { Header } from 'components/App.styled';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieCast } from 'services/apiService';
@@ -8,17 +9,26 @@ const Cast = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    getMovieCast(id).then(setCast);
+    const fetchCast = async () => {
+      try {
+        const movieCast = await getMovieCast(id);
+        setCast(movieCast);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCast();
   }, [id]);
 
   return (
     <>
-      <h1>Cast</h1>
+      <Header as="h2">Cast</Header>
       <ul>
         {cast.map(person => (
           <li key={person.id}>
+            <h3>{person.name}</h3>
             <img src={BASE_IMG_URL + person.profile_path} alt={person.name} />
-            <p>{person.name}</p>
           </li>
         ))}
       </ul>
