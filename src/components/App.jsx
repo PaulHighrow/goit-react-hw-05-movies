@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import { Navigation } from './Navigation/Navigation';
-import { lazy, Suspense } from 'react';
-import { Header } from './App.styled';
+import { lazy } from 'react';
+import { SharedLayout } from './SharedLayout/SharedLayout';
 
 const Home = lazy(() =>
   import(/* webpackChunkName: "Homepage" */ '../pages/Home/Home')
@@ -21,28 +20,15 @@ const Reviews = lazy(() =>
 
 export const App = () => {
   return (
-    <div
-      style={{
-        padding: '40px',
-      }}
-    >
-      <Navigation />
-      <Suspense
-        fallback={
-          <div>
-            <Header>Loading...</Header>
-          </div>
-        }
-      >
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/movies" element={<Movies />} />
-          <Route path="/movies/:id" element={<MovieDetails />}>
-            <Route path="cast" element={<Cast />} />
-            <Route path="reviews" element={<Reviews />} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </div>
+    <Routes>
+      <Route path="/" element={<SharedLayout />}>
+        <Route index element={<Home />} />
+        <Route path="movies" element={<Movies />} />
+        <Route path="movies/:id" element={<MovieDetails />}>
+          <Route path="cast" element={<Cast />} />
+          <Route path="reviews" element={<Reviews />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 };

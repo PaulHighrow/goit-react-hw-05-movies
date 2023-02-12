@@ -1,18 +1,33 @@
-import { NavLink } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { BASE_IMG_URL } from 'services/constants';
+import {
+  TrendingList,
+  Poster,
+  StyledLink,
+  Rating,
+  Info,
+} from './MoviesList.styled';
+import placeholder from '../../img/placeholder.jpg';
 
 export const MoviesList = ({ movies }) => {
   const location = useLocation();
 
   return (
-    <ul>
-      {movies.map(({ id, title }) => (
+    <TrendingList>
+      {movies.map(({ id, title, poster_path, vote_average, release_date }) => (
         <li key={id}>
-          <NavLink to={`/movies/${id}`} state={{ from: location }}>
-            {title}
-          </NavLink>
+          <StyledLink to={`/movies/${id}`} state={{ from: location }}>
+            <Poster
+              src={poster_path ? BASE_IMG_URL + poster_path : placeholder}
+              alt={title}
+            />
+            <Info>
+              {title} ({release_date.slice(0, 4)})
+              <Rating>{vote_average ? vote_average.toFixed(1) : 'N/A'}</Rating>
+            </Info>
+          </StyledLink>
         </li>
       ))}
-    </ul>
+    </TrendingList>
   );
 };

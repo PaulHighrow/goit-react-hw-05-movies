@@ -1,4 +1,4 @@
-import { Header } from 'components/App.styled';
+import { Heading } from 'components/App.styled';
 import { Loader } from 'components/Loader/Loader';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -14,6 +14,7 @@ import {
   ReviewDate,
   Text,
 } from './Reviews.styled';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -28,6 +29,7 @@ const Reviews = () => {
         setReviews(movieReviews);
       } catch (error) {
         console.error(error);
+        toast.error(`Oh boy, it's ${error.message}! Please try again!`);
       } finally {
         setIsLoading(false);
       }
@@ -38,7 +40,7 @@ const Reviews = () => {
 
   return (
     <>
-      <Header as="h2">Reviews</Header>
+      <Heading as="h2">Reviews</Heading>
       {isLoading ? (
         <Loader />
       ) : !!reviews.length ? (
@@ -83,6 +85,7 @@ const Reviews = () => {
       ) : (
         <p>Sorry, no reviews yet!</p>
       )}
+      <Toaster />
     </>
   );
 };

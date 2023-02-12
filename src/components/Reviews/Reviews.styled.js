@@ -3,21 +3,20 @@ import styled from 'styled-components';
 export const ReviewList = styled.ul`
   display: grid;
   gap: 25px;
-  grid: auto-flow / 400px 400px;
+  grid-template-columns: repeat(2, 1fr);
   justify-content: center;
 `;
 
 export const Review = styled.li`
   border: 1px solid #727272;
   padding: 20px;
-  max-width: 600px;
   max-height: 300px;
-  overflow-y: scroll;
-  /* display: flex; */
+  overflow-y: auto;
 `;
 export const Author = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 15px;
 `;
 
 export const Avatar = styled.img`
@@ -25,7 +24,8 @@ export const Avatar = styled.img`
   width: 64px;
   height: 64px;
   object-fit: cover;
-  object-position: 'center center';
+
+  margin-right: 15px;
 `;
 
 export const About = styled.div`

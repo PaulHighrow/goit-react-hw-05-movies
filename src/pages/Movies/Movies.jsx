@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getMoviesByQuery } from 'services/apiService';
 import { Loader } from 'components/Loader/Loader';
-import { Header } from 'components/App.styled';
+import { Heading } from 'components/App.styled';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Movies = () => {
   const [query, setQuery] = useState('');
@@ -17,17 +18,41 @@ const Movies = () => {
       return;
     }
 
-    getMoviesByQuery(searchQuery)
-      .then(setMovies)
-      .catch(error => console.error(error))
-      .finally(() => {
+    const fetchMoviesByQuery = async () => {
+      try {
+        const moviesByQuery = await getMoviesByQuery(
+          searchQuery.trim().toLowerCase()
+        );
+        setMovies(moviesByQuery);
+      } catch (error) {
+        console.error(error);
+        toast.error(`Oh boy, it's ${error.message}! Please try again!`);
+      } finally {
         setIsLoading(false);
-        setQuery(searchQuery);
-      });
+        setQuery(searchQuery.trim().toLowerCase());
+      }
+    };
+
+    fetchMoviesByQuery();
   }, [searchParams]);
 
   const handleSubmit = evt => {
     evt.preventDefault();
+
+    if (!query) {
+      toast.error(`Please enter what you're looking for first!`);
+      return;
+    }
+
+    if (
+      searchParams.get('query').trim().toLowerCase() ===
+      query.trim().toLowerCase()
+    ) {
+      toast.error(
+        `You already have results for "${query.trim()}" on your screen, please try something else!`
+      );
+      return;
+    }
     setIsLoading(true);
     setSearchParams({ query });
   };
@@ -38,13 +63,14 @@ const Movies = () => {
 
   return (
     <>
-      {isLoading && <Loader />}
-      <Header>Movies</Header>
+      <Heading>Movies</Heading>
       <form onSubmit={handleSubmit}>
         <input type="text" name="query" value={query} onChange={handleChange} />
         <button type="submit">Search</button>
       </form>
+      {isLoading && <Loader />}
       <MoviesList movies={movies} />
+      <Toaster />
     </>
   );
 };

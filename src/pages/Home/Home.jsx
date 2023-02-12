@@ -1,7 +1,8 @@
 import { getTrendingMovies } from 'services/apiService';
 import { useState, useEffect } from 'react';
 import { MoviesList } from 'components/MoviesList/MoviesList';
-import { Header } from 'components/App.styled';
+import { Heading } from 'components/App.styled';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -11,18 +12,21 @@ const Home = () => {
       try {
         const trendingMovies = await getTrendingMovies();
         setMovies(trendingMovies);
-      } catch {
-        console.error(Error);
+      } catch (error) {
+        console.error(error);
+        toast.error(`Oh boy, it's ${error.message}! Please try again!`);
       }
     };
+
     fetchTrending();
   }, []);
 
   return (
-    <div>
-      <Header>Home</Header>
+    <>
+      <Heading>Trending today</Heading>
       <MoviesList movies={movies} />
-    </div>
+      <Toaster />
+    </>
   );
 };
 
