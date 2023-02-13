@@ -3,9 +3,23 @@ import { useParams, useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { getMovieDetails } from 'services/apiService';
 import { BASE_IMG_URL } from 'services/constants';
 import { Heading } from 'components/App.styled';
-import { StyledLink } from 'components/MoviesList/MoviesList.styled';
+import {
+  ButtonStyledLink,
+  Rating,
+} from 'components/MoviesList/MoviesList.styled';
 import toast, { Toaster } from 'react-hot-toast';
 import { Loader } from 'components/Loader/Loader';
+import {
+  Details,
+  DetailsButtons,
+  DetailsInfo,
+  DetailsText,
+  GoBack,
+  GoBackIcon,
+  PosterImg,
+  Highlight,
+} from './MovieDetails.styled';
+import placeholder from '../../img/placeholder.jpg';
 
 const MovieDetails = () => {
   const [details, setDetails] = useState(null);
@@ -25,7 +39,6 @@ const MovieDetails = () => {
         const movieDetails = await getMovieDetails(id);
         setDetails(movieDetails);
       } catch (error) {
-        console.error(error);
         toast.error(`Oh boy, it's ${error.message}! Please try again!`);
       } finally {
         setIsLoading(false);
@@ -38,34 +51,107 @@ const MovieDetails = () => {
     return null;
   }
 
-  const { title, poster_path, overview, vote_average, vote_count } = details;
+  const {
+    title,
+    poster_path,
+    overview,
+    vote_average,
+    vote_count,
+    release_date,
+    status,
+    runtime,
+    budget,
+    revenue,
+  } = details;
 
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
-        <div>
+        <>
           <Heading>{title}</Heading>
-          <button type="button" onClick={handleGoBack}>
-            Go back
-          </button>
+          <Details>
+            <GoBack type="button" onClick={handleGoBack}>
+              <GoBackIcon />
+              Go back
+            </GoBack>
 
-          <img src={BASE_IMG_URL + poster_path} alt={title} />
-          {/* <img src={BACK_IMG_URL + backdrop_path} alt={title} /> */}
+            <PosterImg
+              src={poster_path ? BASE_IMG_URL + poster_path : placeholder}
+              alt={title}
+            />
 
-          <p>Overview: {overview}</p>
-          <p>
-            Rating: {vote_average} based on {vote_count} votes
-          </p>
+            <DetailsInfo>
+              <ul>
+                <li>
+                  <DetailsText>
+                    <Highlight>Overview:</Highlight> {overview}
+                  </DetailsText>
+                </li>
+                <li>
+                  <DetailsText>
+                    <Highlight>Status:</Highlight> {status}
+                  </DetailsText>
+                  <DetailsText>
+                    <Highlight>Runtime:</Highlight> {runtime} minutes
+                  </DetailsText>
+                  <DetailsText>
+                    <Highlight>Budget:</Highlight>{' '}
+                    {budget
+                      .toString()
+                      .split('')
+                      .map((symbol, i, a) =>
+                        !((a.length - (i + 1)) % 3) && i + 1 !== a.length
+                          ? symbol + ','
+                          : symbol
+                      )
+                      .join('')}
+                    $
+                  </DetailsText>
+                  <DetailsText>
+                    <Highlight>Revenue:</Highlight>{' '}
+                    {revenue
+                      .toString()
+                      .split('')
+                      .map((symbol, i, a) =>
+                        !((a.length - (i + 1)) % 3) && i + 1 !== a.length
+                          ? symbol + ','
+                          : symbol
+                      )
+                      .join('')}
+                    $
+                  </DetailsText>
+                  <DetailsText>
+                    <Highlight>Release date:</Highlight>{' '}
+                    {new Date(release_date).toLocaleString().slice(0, 10)}
+                  </DetailsText>
+                </li>
+                <li>
+                  <DetailsText>
+                    <Highlight>Rating:</Highlight>{' '}
+                    <Rating>{vote_average}</Rating> based on {vote_count} votes
+                  </DetailsText>
+                </li>
+              </ul>
 
-          <StyledLink to="cast" state={{ from: location.state.from }}>
-            Cast
-          </StyledLink>
-          <StyledLink to="reviews" state={{ from: location.state.from }}>
-            Reviews
-          </StyledLink>
-        </div>
+              <DetailsButtons>
+                <ButtonStyledLink
+                  to="cast"
+                  state={{ from: location.state.from }}
+                >
+                  Cast
+                </ButtonStyledLink>
+                <ButtonStyledLink
+                  to="reviews"
+                  state={{ from: location.state.from }}
+                >
+                  Reviews
+                </ButtonStyledLink>
+              </DetailsButtons>
+            </DetailsInfo>
+          </Details>
+        </>
       )}
       <Outlet />
       <Toaster />

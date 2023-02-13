@@ -1,4 +1,4 @@
-import { StyledLink } from 'components/MoviesList/MoviesList.styled';
+import { ButtonStyledLink } from 'components/MoviesList/MoviesList.styled';
 import { Header, Title, NavBox } from './Navigation.styled';
 
 export const Navigation = () => {
@@ -8,10 +8,10 @@ export const Navigation = () => {
         React Movie Catalogue🎬
       </Title>
       <NavBox>
-        <StyledLink to="/" end>
+        <ButtonStyledLink to="/" end>
           Home Page
-        </StyledLink>
-        <StyledLink to="/movies">Find a Movie</StyledLink>
+        </ButtonStyledLink>
+        <ButtonStyledLink to="/movies">Find a Movie</ButtonStyledLink>
       </NavBox>
     </Header>
   );

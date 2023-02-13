@@ -3,7 +3,7 @@ import { BASE_IMG_URL } from 'services/constants';
 import {
   TrendingList,
   Poster,
-  StyledLink,
+  ListLink,
   Rating,
   Info,
 } from './MoviesList.styled';
@@ -16,7 +16,7 @@ export const MoviesList = ({ movies }) => {
     <TrendingList>
       {movies.map(({ id, title, poster_path, vote_average, release_date }) => (
         <li key={id}>
-          <StyledLink to={`/movies/${id}`} state={{ from: location }}>
+          <ListLink to={`/movies/${id}`} state={{ from: location }}>
             <Poster
               src={poster_path ? BASE_IMG_URL + poster_path : placeholder}
               alt={title}
@@ -25,7 +25,7 @@ export const MoviesList = ({ movies }) => {
               {title} ({release_date.slice(0, 4)})
               <Rating>{vote_average ? vote_average.toFixed(1) : 'N/A'}</Rating>
             </Info>
-          </StyledLink>
+          </ListLink>
         </li>
       ))}
     </TrendingList>

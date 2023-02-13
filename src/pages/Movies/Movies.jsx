@@ -5,6 +5,12 @@ import { getMoviesByQuery } from 'services/apiService';
 import { Loader } from 'components/Loader/Loader';
 import { Heading } from 'components/App.styled';
 import toast, { Toaster } from 'react-hot-toast';
+import {
+  SearchForm,
+  SearchInput,
+  SearchButton,
+  SearchIcon,
+} from './Movies.styled';
 
 const Movies = () => {
   const [query, setQuery] = useState('');
@@ -23,9 +29,11 @@ const Movies = () => {
         const moviesByQuery = await getMoviesByQuery(
           searchQuery.trim().toLowerCase()
         );
+        if (!moviesByQuery.length) {
+          throw new Error('Bad Query');
+        }
         setMovies(moviesByQuery);
       } catch (error) {
-        console.error(error);
         toast.error(`Oh boy, it's ${error.message}! Please try again!`);
       } finally {
         setIsLoading(false);
@@ -45,7 +53,7 @@ const Movies = () => {
     }
 
     if (
-      searchParams.get('query').trim().toLowerCase() ===
+      searchParams.get('query')?.trim().toLowerCase() ===
       query.trim().toLowerCase()
     ) {
       toast.error(
@@ -64,10 +72,18 @@ const Movies = () => {
   return (
     <>
       <Heading>Movies</Heading>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="query" value={query} onChange={handleChange} />
-        <button type="submit">Search</button>
-      </form>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchInput
+          type="text"
+          name="query"
+          value={query}
+          onChange={handleChange}
+          placeholder="Find a movie"
+        />
+        <SearchButton type="submit">
+          <SearchIcon />
+        </SearchButton>
+      </SearchForm>
       {isLoading && <Loader />}
       <MoviesList movies={movies} />
       <Toaster />

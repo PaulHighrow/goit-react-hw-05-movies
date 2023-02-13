@@ -7,14 +7,30 @@ export const TrendingList = styled.ul`
   gap: 8px;
 `;
 
-export const StyledLink = styled(NavLink)`
+export const ListLink = styled(NavLink)`
   text-decoration: none;
-  color: #727272;
-  font-weight: 700;
+  color: #000;
+  font-weight: 500;
 
   &:hover,
   &:focus {
     color: #be7214;
+  }
+`;
+
+export const ButtonStyledLink = styled(NavLink)`
+  text-decoration: none;
+  color: #000;
+  font-weight: 700;
+  padding: 8px;
+  background-color: #f7f2c7;
+  border: 2px solid #727272;
+  border-radius: 10px;
+
+  &:hover,
+  &:focus {
+    color: #be7214;
+    background-color: #ecf5f0;
   }
 `;
 
