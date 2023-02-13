@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import { BASE_IMG_URL } from 'services/constants';
 import {
@@ -30,4 +31,8 @@ export const MoviesList = ({ movies }) => {
       ))}
     </TrendingList>
   );
+};
+
+MoviesList.propTypes = {
+  movies: PropTypes.arrayOf(PropTypes.object.isRequired),
 };

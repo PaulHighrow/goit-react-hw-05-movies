@@ -96,32 +96,36 @@ const MovieDetails = () => {
                   <DetailsText>
                     <Highlight>Runtime:</Highlight> {runtime} minutes
                   </DetailsText>
-                  <DetailsText>
-                    <Highlight>Budget:</Highlight>{' '}
-                    {budget
-                      .toString()
-                      .split('')
-                      .map((symbol, i, a) =>
-                        !((a.length - (i + 1)) % 3) && i + 1 !== a.length
-                          ? symbol + ','
-                          : symbol
-                      )
-                      .join('')}
-                    $
-                  </DetailsText>
-                  <DetailsText>
-                    <Highlight>Revenue:</Highlight>{' '}
-                    {revenue
-                      .toString()
-                      .split('')
-                      .map((symbol, i, a) =>
-                        !((a.length - (i + 1)) % 3) && i + 1 !== a.length
-                          ? symbol + ','
-                          : symbol
-                      )
-                      .join('')}
-                    $
-                  </DetailsText>
+                  {!!budget && (
+                    <DetailsText>
+                      <Highlight>Budget:</Highlight>{' '}
+                      {budget
+                        .toString()
+                        .split('')
+                        .map((symbol, i, a) =>
+                          !((a.length - (i + 1)) % 3) && i + 1 !== a.length
+                            ? symbol + ','
+                            : symbol
+                        )
+                        .join('')}
+                      $
+                    </DetailsText>
+                  )}
+                  {!!revenue && (
+                    <DetailsText>
+                      <Highlight>Revenue:</Highlight>{' '}
+                      {revenue
+                        .toString()
+                        .split('')
+                        .map((symbol, i, a) =>
+                          !((a.length - (i + 1)) % 3) && i + 1 !== a.length
+                            ? symbol + ','
+                            : symbol
+                        )
+                        .join('')}
+                      $
+                    </DetailsText>
+                  )}
                   <DetailsText>
                     <Highlight>Release date:</Highlight>{' '}
                     {new Date(release_date).toLocaleString().slice(0, 10)}
