@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { getMovieDetails } from 'services/apiService';
-import { BACK_IMG_URL, BASE_IMG_URL } from 'services/constants';
+import { BASE_IMG_URL } from 'services/constants';
 import { Heading } from 'components/App.styled';
 import { StyledLink } from 'components/MoviesList/MoviesList.styled';
 import toast, { Toaster } from 'react-hot-toast';
@@ -38,14 +38,7 @@ const MovieDetails = () => {
     return null;
   }
 
-  const {
-    title,
-    poster_path,
-    backdrop_path,
-    overview,
-    vote_average,
-    vote_count,
-  } = details;
+  const { title, poster_path, overview, vote_average, vote_count } = details;
 
   return (
     <>
